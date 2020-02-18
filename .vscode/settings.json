@@ -1,0 +1,11 @@
+{
+    "go.goroot": "/usr/local/go",
+    "go.gopath": "/home/xingzheng/go",
+    "go.autocompleteUnimportedPackages": true,
+    "go.gocodePackageLookupMode": "go",
+    "go.gotoSymbol.includeImports": true,
+    "go.useCodeSnippetsOnFunctionSuggest": true,
+    "go.useCodeSnippetsOnFunctionSuggestWithoutType": true,
+    "go.docsTool": "gogetdoc",
+    "go.inferGopath": false
+}
