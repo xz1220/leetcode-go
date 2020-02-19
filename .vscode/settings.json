@@ -7,5 +7,6 @@
     "go.useCodeSnippetsOnFunctionSuggest": true,
     "go.useCodeSnippetsOnFunctionSuggestWithoutType": true,
     "go.docsTool": "gogetdoc",
-    "go.inferGopath": false
+    "go.inferGopath": false,
+    "go.formatTool": "gofmt"
 }
