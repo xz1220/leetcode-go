@@ -134,3 +134,59 @@ func Merge2(intervals [][]int) [][]int {
 
 	return index
 }
+
+// BubbleSort is a //
+func BubbleSort(list []int) []int {
+	length := len(list)
+	for i := 0; i < length; i++ {
+		flag := true
+		for j := 0; j < length-1; j++ {
+			if list[j] > list[j+1] {
+				list[j], list[j+1] = list[j+1], list[j]
+				flag = false
+			}
+		}
+		if flag {
+			break
+		}
+	}
+	//fmt.Println(list)
+	return list
+}
+
+//MergeSort is
+func MergeSort(list []int) []int {
+	length := len(list)
+	if length < 2 {
+		return list
+	}
+
+	midddle := length / 2
+	//递归的写法
+	return merge(MergeSort(list[0:midddle]), MergeSort(list[midddle:]))
+
+}
+
+func merge(left []int, right []int) []int {
+	//result := make([]int, len(left)+len(right))
+	result := []int{}
+	for len(left) > 0 && len(right) > 0 {
+		if left[0] <= right[0] {
+			result = append(result, left[0])
+			left = left[1:]
+		} else {
+			result = append(result, right[0])
+			right = right[1:]
+		}
+	}
+
+	if len(left) > 0 {
+		result = append(result, left...)
+	}
+
+	if len(right) > 0 {
+		result = append(result, right...)
+	}
+
+	return result
+}
