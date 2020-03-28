@@ -44,7 +44,7 @@
  */
 
 
- //用非递归的方法做起来非常容易
+ //用非递归的方法做起来非常容易，其实就是层次遍历
 func minDepth(root *TreeNode) int {
 
 	var depth=0
