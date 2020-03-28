@@ -48,9 +48,44 @@
  *     Right *TreeNode
  * }
  */
-func flatten(root *TreeNode)  {
-	
 
+ //前序便利(注意是要在原地便利，分情况讨论即可)
+func flatten(root *TreeNode)  {
+
+	var dfs func(*TreeNode) *TreeNode
+
+	dfs=func(root *TreeNode) *TreeNode{
+
+		if root==nil{
+			return nil
+		}
+
+		if  root.Left==nil && root.Right==nil{
+			return root
+		}
+
+		if root.Left!=nil && root.Right==nil{
+			root.Right=root.Left
+			root.Left=nil
+			return dfs(root.Right)
+		}
+
+		if root.Left==nil && root.Right!=nil{
+			return dfs(root.Right)
+		}
+
+		if root.Left!=nil && root.Right!=nil{
+			left:=dfs(root.Left)
+			right:=dfs(root.Right)
+			left.Right=root.Right
+			root.Right=root.Left
+			root.Left=nil
+			return right
+		}
+		return nil
+	}
+
+	dfs(root)
 }
 // @lc code=end
 
