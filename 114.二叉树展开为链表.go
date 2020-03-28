@@ -49,6 +49,7 @@
  * }
  */
 func flatten(root *TreeNode)  {
+	
 
 }
 // @lc code=end
