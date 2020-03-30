@@ -1,53 +1,67 @@
 package main
 
 import (
+	"fmt"
 	"log"
 )
 
-func lengthOfLongestSubstring(s string) int {
+func minWindow(s string, t string) string {
 
-	//将字符串转换成rune
-	r := []rune(s)
+	begin, end := 0, len(s)
 	i, j := 0, 0
-	maxLength := 0
+	count := 0
 
-	//make 和new的区别详解 ？ 重写new?
-	count := make(map[rune]int)
+	sRune := []rune(s)
+	tRune := []rune(t)
 
-	for _, char := range r {
-		count[char] = 0
+	mapT := make(map[rune]int)
+	for _, r := range tRune {
+		mapT[r] = 0
 	}
 
-	for j < len(r) {
-		count[r[j]] += 1
-		if count[r[j]] == 2 {
-			maxLength = max(maxLength, j-i)
+	for j < len(sRune) {
+		log.Println("外部循环  ", j)
+		if _, ok := mapT[sRune[j]]; ok {
+			log.Println("判断是否存在键")
+			mapT[sRune[j]] += 1
+			if mapT[sRune[j]] == 1 {
+				log.Println("键值+1")
+				count++
+			}
+		}
 
+		if count == len(tRune) {
+			log.Println("缩减开始")
 			for {
-				count[r[i]] -= 1
 				i++
-				if r[i-1] == r[j] {
-					break
+				if _, ok := mapT[sRune[i-1]]; ok {
+					mapT[sRune[i-1]] -= 1
+					if mapT[sRune[i-1]] == 0 {
+						if end-begin > (j+1)-(i-1) {
+							end = j + 1
+							begin = i - 1
+						}
+						count--
+						break
+					}
 				}
 			}
 		}
 		j++
+
 	}
 
-	maxLength = max(maxLength, j-i)
-	return maxLength
+	log.Println("\nbegin:", begin, "\nend:", end, "\ni：", i, "\nj:", j)
+
+	return string(sRune[begin:end])
 
 }
 
-func max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
-}
 func main() {
 
-	s := "aab"
-	count := lengthOfLongestSubstring(s)
-	log.Println(count)
+	s := "ADOBECODEBANC"
+	t := "ABC"
+	re := minWindow(s, t)
+	fmt.Println(re)
+
 }
