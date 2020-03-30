@@ -1,0 +1,274 @@
+* 计算机网络
+** TCP与UDP 的区别是什么？
+- TCP是可靠的按需递交的协议 提供 拥塞控制 流量控制 连接建立
+- UDP 是不可靠的无序协议 
+- 他们都不提供延迟保证和带宽保证
+** TCP 三次握手、四次挥手的细节部分。为什么是三次？
+
+** TCP为什么可靠？
+
+** MTU 数据链路层
+
+** websSocket
+
+** HTTP 请求响应的过程、HTTP请求包含的部分、HTTP请求头包含那些部分？
+
+** Cookie && session 的区别是什么？
+
+** HTTP 1,1.1,2,3
+
+** HTTP 为什么是TCP
+
+** 使用UDP设计可靠传输
+
+* 操作系统
+** 进程,线程。协程的区别？
+
+** 进程的调度算法？目前操作系统一般用什么方法？
+
+** 进程状态和线程状态？
+
+** IO 多路复用
+
+** select/poll/epoll
+
+** 文件描述符
+
+** TOP 命令
+
+** 进程的内存
+
+** linux上怎么调试程序
+
+** 异步IO和同步IO
+
+** 阻塞IO 和 非阻塞IO
+
+** rm 命令？Linux  程序写文件时rm能否成功rm -f呢？
+
+** rm -f之后 正在写文件的程序会怎样 报什么错
+
+** 写数据到磁盘，从系统调用开始到真正写到磁盘上  中间copy了多少次
+
+** 虚拟地址和物理地
+
+** 内存对齐是什么
+
+** 进程上下文切换信息保存
+
+* mysql
+** 手写SQL
+
+** Mysql 主键是什么概念？
+
+** 主键和索引
+
+** innodb mylsam
+
+** 辅助索引
+
+** 聚簇索引 非聚簇
+
+** 场景题：给定一个场景如何建表等等
+
+** 索引的底层实现
+
+* Redis
+** redis 为什么这么快
+
+* golang
+** 如何实现栈和队列
+    可以自己实现，但是一般来说有两种方法：
+    1. 通过slice实现，入栈出栈可以使用切片来实现。但是有内存泄漏的风险
+    2. 利用标准库里面的container/link（双向链表） 来实现，不保证线程安全
+      
+    container包中包含三个主要的东西，一个是heap 定义了一些接口，需要用户自己去实现，接口内部嵌入了sort包的中的接口。
+    还有一个是link 双向链表，最后一个是ring
+** go中的接口？有什么优劣之处？
+    接口：抽象出来的模式或者说是约定，一系列函数签名的合集
+    优点：非侵入式的，编码起来非常灵活，一般来说在项目开始的时候很难去定义需要哪些接口，go可以随着项目的进行来确定最终需要那些接口
+    劣势: 相比与侵入式的接口而言，很难确定一个结构提实现了哪些接口，也很难确定哪些接口被实现了。可能存在名称冲突的问题。
+
+    如果a接口中包含b，c两个接口，且b，c两个接口中有重名，那么在go1.14 之前会报编译错误，但是在go1.14中修复了这个错误。
+
+** 介绍一下gin框架并且与原生的net/http比较
+
+** golang 的GMP模型
+
+** GOROUTINE 的优势，它的轻量级体现在哪
+
+** 线程和协程的堆栈的异同
+
+** golang 如何创建一个map
+
+** golang 的channel
+
+** 说一说docker如何映射端口的，docker网络模型
+
+** goroutine 多核模型下是如何分配
+
+** go 闭包是如何实现的（在做树的时候，有时候递归需要传递一个类似于全局变量一样的东西，用闭包来实现非常的方便）
+* 数据结构与算法
+** 10亿个数字，取最小的100个数
+    说思路：最大堆， partition   两者的时间复杂度，写伪代码
+** 1亿个正整数范围是0-42亿。求出现次数是2的数字，空间复杂度
+
+** 从上往下打印二叉树
+
+** 链表求和
+
+** 一致性哈希
+
+** 常见的加解密算法有哪些
+
+** MD5 和SHA 用来做什么的
+
+** 两千万高考生的成绩 如何排序
+
+** 给定一个 0-4随机数生成器 如何生成0-6随机数
+
+** 二叉树的最近公共祖先 leetcode 236   稍有不同，原题的2个节点，面试是多个节点算法的时间复杂度
+
+** 二叉树中的最大路径和 leetcode 124
+
+** 树
+*** 树的遍历算法
+**** 递归版本的前中后序遍历
+#+begin_src go
+type Tree struct{
+root int
+left *tree
+right *tree
+}
+
+func traverse(root Tree){
+if root==nil{
+return 
+}
+
+1
+traverse(root.left)
+2
+traverse(root.right)
+3
+}
+#+end_src
+如果处理函数在1处，那么就是前序遍历;如果在2,那么就是中序遍历;如果在3就是后续遍历;
+
+**** 非递归的版本
+这种版本有点复杂，一般来说递归函数都可以改成非递归;要解决这个问题需要用到一些数据结构;
+***** 前序遍历
+从代码中很容易看出来，遍历的节点是preNode，一个直接的顺序是preNode(当前节点)-> preNode.left -> preNode.right.
+符合前序遍历的标准。
+- 只要当前节点不是nil，那么就一定会入栈。对一一个最简单的二层的树，入栈出栈的顺序是：根节点入栈，左孩子入栈，左孩子出栈，根节点出栈，右节点入栈，右节点出栈
+- 所以可以通过这个模型来解决前序遍历和中序遍历，但如果是后续遍历的话，右孩子出栈的时候父节点已经先出栈了，可能有人想通过额外的变量来维护，但当树结构复杂了以后这几乎是不可能的
+#+begin_src go
+func traverse(root Tree){
+stack:=make([]Tree,0)
+preNode:=root
+
+while(preNode!=nil || len(stack)!=0){
+
+if (preNode!=nil){
+
+fmt.Println(preNode.val)
+stack=append(stack,preNode)
+preNode=preNode.left
+
+}else{
+
+node,stack:=stack[len(stack)-1:len(stack)],stack[:len(stack)-1]
+preNode=node.right
+
+}
+}
+}
+#+end_src 
+***** 中序遍历
+#+begin_src go
+func traverse(root Tree){
+
+stack:=make([]Tree,0)
+preNode:=root
+
+while(preNode!=nil || len(stack)!=0){
+
+if preNode!=nil{
+
+stack=append(stack,preNode)
+preNode=preNode.left
+
+}else{
+
+node,stack:=stack[len(stack)-1:len(stack)],stack[:len(stack)-1]
+fmt.Println(node.val)
+preNode=node.right
+
+}
+}
+}
+#+end_src
+***** 后续遍历
+我们需要新的思路来完成后序遍历 
+
+新策略：
+- 要保证根结点在左孩子和右孩子被访问之后才能被访问，
+- 因此对于任一结点P。先将其入栈。假设P不存在左孩子和右孩子。则能够直接訪问它；
+- 或者P存在左孩子或者右孩子。可是其左孩子和右孩子都已被訪问过了。则相同能够直接訪问该结点。
+- 若非上述两种情况。则将P的右孩子和左孩子依次入栈。
+- 这样就保证了每次取栈顶元素的时候，左孩子在右孩子前面被訪问。左孩子和右孩子都在根结点前面被訪问。
+
+#+begin_src go
+func traverse(root Tree){
+
+stack:=make([]Tree,0)
+var top Tree
+var pre Tree=nil
+
+for pre==nil || len(stack)!=0{
+
+top=stack[len(stack)-1]   //指向栈顶元素
+
+//两种情况
+if (top.left==nil && top.right==nil) || (pre!=nil && (pre==top.left || pre==top.right)){
+
+fmt.Println(top.value)         //访问当前值
+pre=top                        //更新pre 
+stack=stack[:len(stack)-1]     //出栈
+
+}else{
+
+if top.right!=nil{
+stack=append(stack,top.right)
+}
+if top.left!=nil{
+stack=append(stack,top.left)
+
+}
+}
+}
+}
+#+end_src
+** 查找二叉树的一个节点的后继节点
+*** 后继节点的概念
+    后继节点是中序遍历二叉树后这个节点的后一个节点
+*** 算法
+**** 常规：
+     不断寻找父节点，直到找到根节点，开始对当前二叉树进行中序遍历，在中序遍历的过程中比对是否为需要判断的节点。这是很容易理解的一种思路，时间复杂度是O(N),N是二叉树节点个数。
+**** 进阶：
+     1. 最简单情况是node有右子树，那么后继节点就是右子树的最左节点。
+     2. node没有右子树：
+        1. 是父节点的左孩子，那么后继节点是父节点
+        2. 是父节点的右孩子，不断找父节点，直到找到s节点，s节点是父节点p的左孩子。那么p就是node节点的后继节点。（node是以p为根节点的二叉树的左子树中的最右节点）
+     3. 第2步没有满足的节点，证明当前节点是二叉树右子树的最右节点，即二叉树中序遍历的最后一个节点，无后继节点。
+** 排序算法 dijkstra算法、prim算法 用堆进行优化
+
+* 小范围
+** git remote
+
+
+
+* 招聘截止时间
+** TODO shopee 4.12截至
+** TODO 七牛云 内推截至时间是4月15日
+** TODO 跟谁学 未说明
