@@ -127,27 +127,24 @@
 
 
 * 数据结构与算法
-** 10亿个数字，取最小的100个数
+** 动态规划
+
+** Question
+*** 10亿个数字，取最小的100个数
     说思路：最大堆， partition   两者的时间复杂度，写伪代码
-** 1亿个正整数范围是0-42亿。求出现次数是2的数字，空间复杂度
+*** 1亿个正整数范围是0-42亿。求出现次数是2的数字，空间复杂度
 
-** 从上往下打印二叉树
+*** 从上往下打印二叉树
+*** 链表求和
+*** 一致性哈希
 
-** 链表求和
+*** 常见的加解密算法有哪些
 
-** 一致性哈希
+*** MD5 和SHA 用来做什么的
 
-** 常见的加解密算法有哪些
+*** 两千万高考生的成绩 如何排序
 
-** MD5 和SHA 用来做什么的
-
-** 两千万高考生的成绩 如何排序
-
-** 给定一个 0-4随机数生成器 如何生成0-6随机数
-
-** 二叉树的最近公共祖先 leetcode 236   稍有不同，原题的2个节点，面试是多个节点算法的时间复杂度
-
-** 二叉树中的最大路径和 leetcode 124
+*** 给定一个 0-4随机数生成器 如何生成0-6随机数
 
 ** 树
 *** 树的遍历算法
@@ -267,6 +264,99 @@ stack=append(stack,top.left)
 }
 }
 #+end_src
+*** 二叉树中的最大路径和 leetcode 124
+废话不多说，上代码
+
+#+begin_src go
+// 可以替换为： math.max()
+func max(a,b int)int{
+	if a>b {
+		return a
+	}
+	return b
+}
+
+func maxPathSum(root *TreeNode) int {
+	if root==nil{
+		return 0
+	}
+
+    // 存储当前的最大值
+	//在这里不可以随意初始化，要考虑到只有一个节点的情况
+	maxSum:=root.Val
+
+    //深度优先搜索
+	var dfs func(*TreeNode)int
+	dfs=func(root *TreeNode)int{
+		if root==nil{
+			return 0
+		}
+        
+        //由于节点可能存在负值，如果出现，就直接置为0,相当与不走这一边
+		left:=max(0,dfs(root.Left))
+		right:=max(0,dfs(root.Right))
+
+        //表示当前子树下最大的路径值为多少
+		sum:=left+root.Val+right
+		if sum>maxSum{
+			maxSum=sum
+		}
+        
+        //返回的时候只选择最大的一条分支
+		return max(left,right)+root.Val
+	}
+
+	dfs(root)
+
+	return maxSum
+
+}
+#+end_src 
+*** 二叉树的最近公共祖先 leetcode 236稍有不同，原题的2个节点，面试是多个节点算法的时间复杂度
+    还是dfs，多叉树的思路和二叉树的思路其实是一样的。代码如下：
+
+
+#+begin_src go
+ 
+func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
+ 
+    // 定义一些变量
+    var dfs func(*TreeNode)bool
+	var parent *TreeNode
+
+	dfs=func(root *TreeNode)bool{
+	   //边界条件爱你
+       if root==nil{
+			return false
+		}
+        
+        //判断是否是我们需要的那个节点
+		var flag bool=false         
+		if root==p || root==q{
+			flag=true
+		}
+		
+		left:=dfs(root.Left)
+		right:=dfs(root.Right)
+
+        //处理三种情况
+		if (left && right) || (flag && left) || (flag && right){
+			if parent==nil{
+				fmt.Println("正常赋值",root.Val)
+				parent=root
+			}
+		}
+
+	   return flag || left || right
+	}
+
+	dfs(root)
+
+	return parent
+}
+#+end_src
+
+
 ** 查找二叉树的一个节点的后继节点
 *** 后继节点的概念
     后继节点是中序遍历二叉树后这个节点的后一个节点
