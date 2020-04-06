@@ -1,5 +1,4 @@
 * golang
-
 ** defer
 golang中文社区总体来说是非常好的，有许多大牛愿意去分享自己的见解和经验，有其实golangweekly和go-night-talk这两个让我收益良多。但是也不乏有一些营销存在，他们以令人困惑的方式宣传这go语言的一些特性。
 defer语句在go1.14中进行了一些改进，带来了效率上的提升。但这并不代表可以不加节制的使用。
@@ -21,9 +20,10 @@ defer语句在go1.14中进行了一些改进，带来了效率上的提升。但
 *** 一些常用的知识点
 摘抄自：https://mp.weixin.qq.com/s?__biz=MzAxMTA4Njc0OQ==&mid=2651439052&idx=2&sn=4d76d79154cec90353e4b1ad7811a0d9&chksm=80bb613eb7cce8281f3c9fe880d07dec2210652c52be7b22339dedb46859a1b00393ee250955&scene=21#wechat_redirect
 **** 多个defer的执行顺序
-多个defer调用是一个压栈的过程，调用时出栈
+多个defer是一个压栈的过程，调用时出栈
 **** defer 与 return 的返回顺序
 [[./img/defer-return.jpg]]
+
 defer语句会在函数体执行结束后执行，也就是在return语句后调用
 **** 函数返回值初始化的问题
 只要声明函数的返回值变量名称，就会在函数初始化的时候赋值为该类型的初值，在调用return语句的时候在进行赋值，而且在函数体作用域内可见。
