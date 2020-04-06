@@ -67,7 +67,7 @@ func main() {
 #+end_src
 
 **** defer+panic
-[[./img/defer-1.jpg]]
+[[./img/defer-panic.jpg]]
 
 在调用panic之前，会先将当前函数的defer函数栈出栈清空，并且传递异常信息，如果遇到recover则捕获异常，如果没有继续传递。
 ***** 不捕获panic
