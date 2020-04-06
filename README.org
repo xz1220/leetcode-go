@@ -19,9 +19,11 @@ defer语句在go1.14中进行了一些改进，带来了效率上的提升。但
 - 唯一的运行时成本就是存储参与延迟调用的相关信息，运行时性能最好
 
 *** 一些常用的知识点
+摘抄自：https://mp.weixin.qq.com/s?__biz=MzAxMTA4Njc0OQ==&mid=2651439052&idx=2&sn=4d76d79154cec90353e4b1ad7811a0d9&chksm=80bb613eb7cce8281f3c9fe880d07dec2210652c52be7b22339dedb46859a1b00393ee250955&scene=21#wechat_redirect
 **** 多个defer的执行顺序
 多个defer调用是一个压栈的过程，调用时出栈
 **** defer 与 return 的返回顺序
+[[./img/defer-return.jpg]]
 defer语句会在函数体执行结束后执行，也就是在return语句后调用
 **** 函数返回值初始化的问题
 只要声明函数的返回值变量名称，就会在函数初始化的时候赋值为该类型的初值，在调用return语句的时候在进行赋值，而且在函数体作用域内可见。
@@ -65,8 +67,160 @@ func main() {
 #+end_src
 
 **** defer+panic
-[[./img/640.webp
-]][[./img/321373.jpg]]
+[[./img/defer-1.jpg]]
+
+在调用panic之前，会先将当前函数的defer函数栈出栈清空，并且传递异常信息，如果遇到recover则捕获异常，如果没有继续传递。
+***** 不捕获panic
+#+begin_src go
+package main
+
+import (
+    "fmt"
+)
+
+func main() {
+    defer_call()
+
+    fmt.Println("main 正常结束")
+}
+
+func defer_call() {
+    defer func() { fmt.Println("defer: panic 之前1") }()
+    defer func() { fmt.Println("defer: panic 之前2") }()
+
+    panic("异常内容")  //触发defer出栈
+
+    defer func() { fmt.Println("defer: panic 之后，永远执行不到") }()
+}
+
+#+end_src
+
+**result**
+
+#+begin_src go
+defer: panic 之前2
+defer: panic 之前1
+panic: 异常内容
+//... 异常堆栈信息
+#+end_src
+
+***** 捕获panic
+由于异常会在defer出栈的时候进行传递，所以就可以通过recover进行捕获。
+
+#+begin_src go
+package main
+
+import (
+    "fmt"
+)
+
+func main() {
+    defer_call()
+
+    fmt.Println("main 正常结束")
+}
+
+func defer_call() {
+
+    defer func() {
+        fmt.Println("defer: panic 之前1, 捕获异常")
+        if err := recover(); err != nil {
+            fmt.Println(err)
+        }
+    }()
+
+    defer func() { fmt.Println("defer: panic 之前2, 不捕获") }()
+
+    panic("异常内容")  //触发defer出栈
+
+    defer func() { fmt.Println("defer: panic 之后, 永远执行不到") }()
+}
+#+end_src
+**result**
+#+begin_src go
+efer: panic 之前2, 不捕获
+defer: panic 之前1, 捕获异常
+异常内容
+main 正常结束
+#+end_src
+
+defer 的作用在于它在panic之前会被调用，而且可以访问函数内的一些资源，既可以用recover来捕获异常，也可以在defer函数内进行一些资源释放操作，来避免一些问题。
+
+
+
+**** defer 中包含panic
+看代码：
+#+begin_src go
+package main
+
+import (
+    "fmt"
+)
+
+func main()  {
+
+    defer func() {
+       if err := recover(); err != nil{
+           fmt.Println(err)
+       }else {
+           fmt.Println("fatal")
+       }
+    }()
+
+    defer func() {
+        panic("defer panic")
+    }()
+
+    panic("panic")
+}
+
+//输出
+defer:panic  //panic 仅仅只有最后一个可以被recover捕获
+
+#+end_src
+
+**** defer 函数参数包含子函数
+#+begin_src go
+package main
+
+import "fmt"
+
+func function(index int, value int) int {
+
+    fmt.Println(index)
+
+    return index
+}
+
+func main() {
+    defer function(1, function(3, 0))
+    defer function(2, function(4, 0))
+}
+#+end_src
+
+引用自原文：这里，有4个函数，他们的index序号分别为1，2，3，4。
+
+那么这4个函数的先后执行顺序是什么呢？这里面有两个defer， 所以defer一共会压栈两次，先进栈1，后进栈2。那么在压栈function1的时候，需要连同函数地址、函数形参一同进栈，那么为了得到function1的第二个参数的结果，所以就需要先执行function3将第二个参数算出，那么function3就被第一个执行。同理压栈function2，就需要执行function4算出function2第二个参数的值。然后函数结束，先出栈fuction2、再出栈function1.
+
+所以顺序如下：
+- defer压栈function1，压栈函数地址、形参1、形参2(调用function3) --> 打印3
+- defer压栈function2，压栈函数地址、形参1、形参2(调用function4) --> 打印4
+- defer出栈function2，调用function2 --> 打印2
+- defer出栈function1，调用function1--> 打印1
+**** 例子
+#+begin_src go
+func DeferFunc4() (t int) {
+    defer func(i int) {
+        fmt.Println(i)
+        fmt.Println(t)
+    }(t)
+    t = 1
+    return 2
+}
+
+//调用函数 输出：0 2
+//因为在deferz压栈的时候t=0=i
+#+end_src
 
 ** go中的接口？有什么优劣之处？
     接口：抽象出来的模式或者说是约定，一系列函数签名的合集
