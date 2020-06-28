@@ -587,11 +587,3 @@ func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
      不是很能理解为什么要划分这么多？
 **** 
 
-* 小范围
-** git remote
-
-
-* 招聘截止时间
-** TODO shopee 4.12截至
-** TODO 七牛云 内推截至时间是4月15日
-** TODO 跟谁学 未说明
