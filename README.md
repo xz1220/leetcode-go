@@ -108,6 +108,31 @@ func Traversal(root *TreeNode) {
 }
 ```
 
+
+
+另外一种实现
+
+```go
+func Traversal(root *TreeNode){
+    stack:=[]*TreeNode{}
+    
+    for len(stack)!=0 || root!=nil{
+        for root!=nil{
+            stack = append(stack,root)
+            root = root.Left
+        }
+        root = stack[len(stack)-1]
+        stack = stack[:len(stack)-1]
+        
+        //Do something to root : 中序遍历
+        
+        root = root.Right
+    }
+}
+```
+
+
+
 **后序遍历**
 
 后续遍历的非递归版本因为需要保证在访问左孩子和右孩子之后才访问当前节点，流程控制上稍微麻烦一点，大致有三种实现方式：
@@ -134,17 +159,16 @@ func Traversal(root *TreeNode){
             pre = pre.Left
         }
         
-        if len(stack)!=0{
-            temp = stack[len(stack)-1]
-            stack = stack[:len(stack)-1]
-            if temp.isFirst {
-                temp.isFirst = false
-                stack = append(stack, temp)
-                p = temp.btnode.Right
-            }else{
-                // Do something  : 后序遍历
-                pre = nil
-            }
+
+        temp = stack[len(stack)-1]
+        stack = stack[:len(stack)-1]
+        if temp.isFirst {
+            temp.isFirst = false
+            stack = append(stack, temp)
+            p = temp.btnode.Right
+        }else{
+            // Do something  : 后序遍历
+            pre = nil
         }
     }
 }
