@@ -257,3 +257,72 @@ func Traversal(root *TreeNode){
 }
 ```
 
+**Morris遍历算法**
+
+先直接给出JAVA实现
+
+```java
+
+public class MorrisTraval {
+    private TreeNode root = null;
+    public MorrisTraval(TreeNode r) {
+        this.root = r;
+    }
+    
+    public void travel() {
+        TreeNode n = this.root;
+        
+        while (n != null) {
+            if (n.left == null) {
+                System.out.print(n.vaule + " ");
+                n = n.right;
+            } else {
+                TreeNode pre = getPredecessor(n);
+                
+                if (pre.right == null) {
+                    pre.right = n;
+                    n = n.left;
+                }else if (pre.right == n) {
+                    pre.right = null;
+                    System.out.print(n.vaule + " ");
+                    n = n.right;
+                }
+                
+            }
+        }
+    }
+    
+    private TreeNode getPredecessor(TreeNode n) {
+        TreeNode pre = n;
+        if (n.left != null) {
+            pre = pre.left;
+            while (pre.right != null && pre.right != n) {
+                pre = pre.right;
+            }
+        }
+        
+        return pre;
+    }
+    
+}
+
+```
+
+辅以例子：
+
+![2849961-39ee4cf6c2e127db](./img/instance.webp)
+
+- 对二叉搜索树的中序遍历是一个升序的数列
+- 我个人对算法的理解是：
+  - 首先从根节点开始向左子树不断去寻找节点的前驱节点，并且将前驱节点的右孩子指向后继节点
+  - 结果如下，从6开始，寻找到前驱节点5，5的前驱是4，4的前驱是3，以此类推一直到1，然后我们就可以从节点1出发，不断访问右孩子，输出1到6.
+  - ![2849961-39ee4cf6c2e127db](./img/instance2.webp)
+  - 对于右子树，我们可以将其看为一个完整的树，root指向9，那么重复上述过程，我们可以得到7到9的数列
+  - 同理，对于10来说，也看做是一个单节点的树，输出10
+
+
+
+
+
+
+
