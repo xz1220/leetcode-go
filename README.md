@@ -67,18 +67,17 @@ func Traverse (root *TreeNode) {
 ```go
 func Traversal(root *TreeNode) {
 
-	var pre *TreeNode=root
 	stack:=make([]*TreeNode,0)
 
-	for pre!=nil || len(stack)!=0{
-		if pre!=nil{
-            // Do something to pre : 前序遍历
-            stack=append(stack,pre)       // push: 入栈
-			pre=pre.Left
+	for root!=nil || len(stack)!=0{
+		if root!=nil{
+            // Do something to root : 前序遍历
+            stack=append(stack,root)       // push: 入栈
+			root=root.Left
 		}else{
-            node:=stack[len(stack)-1]     // pop: 出栈
-			stack=stack[:len(stack)-1]
-			pre=node.Right
+            root = stack[len(stack)-1]     // pop: 出栈
+			stack = stack[:len(stack)-1]
+			root=root.Right
 		}
 	}
 }
@@ -90,19 +89,18 @@ func Traversal(root *TreeNode) {
 
 ```go
 func Traversal(root *TreeNode) {
-
-	var pre *TreeNode=root
+    
 	stack:=make([]*TreeNode,0)
 
-	for pre!=nil || len(stack)!=0{
-		if pre!=nil{
-            stack=append(stack,pre)       // push: 入栈
-			pre=pre.Left
+	for root!=nil || len(stack)!=0{
+		if root!=nil{
+            stack=append(stack,root)       // push: 入栈
+			root=root.Left
 		}else{
-            node:=stack[len(stack)-1]     // pop: 出栈
-			stack=stack[:len(stack)-1]
-            // Do something to node : 中序遍历
-			pre=node.Right
+            root = stack[len(stack)-1]     // pop: 出栈
+            stack = stack[:len(stack)-1]
+            // Do something to root : 中序遍历
+			root=root.Right
 		}
 	}
 }
