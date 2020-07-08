@@ -72,7 +72,9 @@
  *     Right *TreeNode
  * }
  */
-func recoverTree(root *TreeNode)  {
+
+
+func RecursiveRecoverTree(root *TreeNode)  {
 
 	//两个指针是必要的，因为根据题目而言，只存在一对错误的节点，也就是在中序遍历的过程中
 	//只存在两个pair不符合从小到大的规律
@@ -112,5 +114,104 @@ func recoverTree(root *TreeNode)  {
 
 	first.Val,second.Val=second.Val,first.Val
 }
+
+/*
+非递归
+*/
+
+func NonRecursiveRecoverTree(root *TreeNode)  {
+
+	stack :=make([]*TreeNode,0)
+	var (
+		pre *TreeNode
+		x *TreeNode
+		y *TreeNode
+	)
+
+	for root!=nil || len(stack)!=0{
+		if root!=nil{
+			stack = append(stack, root)
+			root = root.Left
+		}else{
+			root =stack[len(stack)-1]
+			stack = stack[:len(stack)-1]
+			
+			if pre!=nil && pre.Val>=root.Val{
+
+                y = root
+                if x == nil {
+                    x = pre
+                }
+			}
+
+            pre = root
+            root = root.Right
+
+		}
+	}
+
+    x.Val,y.Val=y.Val,x.Val
+
+}
+
+// Morris 算法
+func recoverTree(root *TreeNode) {
+	var (
+		predecessor *TreeNode
+		x *TreeNode
+		y *TreeNode
+		pred *TreeNode
+	)
+
+
+	for root!=nil{
+		if root.Left == nil {
+			if pred!=nil && root.Val < pred.Val{
+				y = root
+				if x == nil {
+					x = pred
+				}
+			}
+			pred = root
+
+			root = root.Right
+		}else{
+			predecessor = GetPreDecessor(root)
+
+			if predecessor.Right==nil{
+				predecessor.Right = root
+				root = root.Left
+			}else{
+				if pred!=nil && root.Val < pred.Val{
+					y = root
+					if x == nil {
+						x = pred
+					}
+				}
+				pred = root
+
+				predecessor.Right = nil
+				root = root.Right
+			}
+		}
+	}
+
+	x.Val, y.Val=y.Val,x.Val
+}
+
+func GetPreDecessor(node *TreeNode) *TreeNode{
+	var pre *TreeNode=node
+	if node.Left != nil {
+		pre = pre.Left
+		for pre.Right!=nil && pre.Right != node{
+			pre = pre.Right
+		}
+	}
+
+	return pre
+}
+
+
+
 // @lc code=end
 
