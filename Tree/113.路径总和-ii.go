@@ -152,40 +152,44 @@
 
 //我的做法会在没一层递归都进行深copy 这是非常耗费时间也浪费内存，其实只要在找到满足条件的情况下进行深copy就可以
 
-func pathSum(root *TreeNode, sum int) [][]int {
-	res := [][]int{}
-	path := []int{}
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+ func pathSum(root *TreeNode, sum int) [][]int {
 
-	var dfs func(*TreeNode, int, int)
-	dfs = func(node *TreeNode, level, sum int) {
-		if node == nil {
-			return
-		}
+    var dfs func(root *TreeNode, level int, sum int)
 
-		// 根据 level 来更新 path
-		if level >= len(path) {
-			path = append(path, node.Val)
-		} else {
-			path[level] = node.Val
-		}
-		sum -= node.Val
+    Totel := [][]int{}
+    Temp := []int{}
 
-		// 到达 leaf
-		// 并且，此条路径符合要求
-		if node.Left == nil && node.Right == nil && sum == 0 {
-			temp := make([]int, level+1)
-			// copy 不会复制 path[len(temp):]，如果 len(path) > len(temp) 的话
-			copy(temp, path)
-			res = append(res, temp)
-		}
+    dfs = func(root *TreeNode, level int, sum int) {
+        if root == nil {
+            return 
+        }
 
-		dfs(node.Left, level+1, sum)
-		dfs(node.Right, level+1, sum)
-	}
+        if level >= len(Temp) {
+            Temp = append(Temp, root.Val)
+        }
+        Temp[level] = root.Val
 
-	dfs(root, 0, sum)
+        if root.Left == nil && root.Right == nil && (sum - root.Val) == 0 {  
+            copyedSlice := make([]int,level+1)
+            copy(copyedSlice, Temp)
+            Totel = append(Totel,copyedSlice)    
+        }
 
-	return res
+        dfs(root.Left, level+1, sum - root.Val)
+        dfs(root.Right, level+1, sum - root.Val)
+    }
+
+    dfs(root,0,sum)
+
+    return Totel
 }
 
 // @lc code=end
