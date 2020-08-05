@@ -50,7 +50,6 @@
  * }
  */
 func invertTree(root *TreeNode) *TreeNode {
-
 	que:=make([]*TreeNode,0)
 	if root!=nil{
 		que=append(que,root)
@@ -58,24 +57,19 @@ func invertTree(root *TreeNode) *TreeNode {
 
 	for len(que)!=0{
 		tempQue:=make([]*TreeNode,0)
-
 		for _,node:=range que{
 			if node.Left!=nil{
 				tempQue=append(tempQue,node.Left)
 			}
-
 			if node.Right!=nil{
 				tempQue=append(tempQue,node.Right)
 			}
-
 			node.Left,node.Right=node.Right,node.Left
 		}
-
 		que=tempQue
 	}
 
 	return root
-
 }
 // @lc code=end
 

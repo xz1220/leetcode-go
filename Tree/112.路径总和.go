@@ -46,31 +46,15 @@
  //深度优先搜索
 func hasPathSum(root *TreeNode, sum int) bool {
 
-	flag:=false
-	var dfs func(*TreeNode,int)
-
-	dfs=func(root *TreeNode,val int){
-		if root==nil{
-			return
-		}
-		if root.Left==nil && root.Right==nil{
-			if val+root.Val==sum{
-				flag=true
-			}
-		}
-		if root.Left==nil && root.Right!=nil{
-			dfs(root.Right,val+root.Val)
-		}
-		if root.Right==nil && root.Left!=nil{
-			dfs(root.Left,val+root.Val)
-		}
-
-		dfs(root.Left,val+root.Val)
-		dfs(root.Right,val+root.Val)
+	if root == nil {
+		return false
 	}
+	if root.Left == nil && root.Right == nil {
+		return sum == root.Val
+	}
+	return hasPathSum(root.Left, sum - root.Val) || hasPathSum(root.Right, sum - root.Val)
 
-	dfs(root,0)
-	return flag
+
 }
 // @lc code=end
 

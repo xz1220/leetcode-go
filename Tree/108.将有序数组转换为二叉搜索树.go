@@ -62,9 +62,6 @@ func sortedArrayToBST(nums []int) *TreeNode {
 	}
 
 	return dfs(nums)
-
-
-
 }
 // @lc code=end
 
