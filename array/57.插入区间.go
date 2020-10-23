@@ -86,5 +86,53 @@ func insert(intervals [][]int, newInterval []int) [][]int {
 	return returnSlice
 }
 
+/*----------------------------------------------------------------
+// a new good method
+// 不需要一个returnSlice 但其实是类似的
+func insert(intervals [][]int, newInterval []int) [][]int {
+    if len(newInterval)==0 {
+        return intervals
+    }
+
+    if len(intervals)==0 {
+        return [][]int{newInterval}
+    }
+
+    i := 0
+    intervalsLen := len(intervals)
+
+    for i < intervalsLen && intervals[i][1] < newInterval[0] {
+        i++
+    }
+
+    tempI := i
+    for i < intervalsLen && intervals[i][0] <= newInterval[1] {
+        newInterval[0] = min(newInterval[0], intervals[i][0])
+        newInterval[1] = max(newInterval[1], intervals[i][1])
+        i++
+    }
+
+    intervals = append(intervals[:tempI], append([][]int{newInterval}, intervals[i:]...)...)
+    return intervals
+}
+
+func min(i, j int) int {
+    if i<j {
+        return i
+    } else {
+        return j
+    }
+}
+
+func max(i, j int) int {
+    if i>j {
+        return i
+    } else {
+        return j
+    }
+}
+
+*/
+
 // @lc code=end
 
