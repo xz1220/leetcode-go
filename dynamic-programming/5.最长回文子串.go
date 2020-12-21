@@ -90,7 +90,7 @@ func longestPalindrome(s string) string {
 	left, right := 0, 0
 	//
 	for i := 0; i < len(s); i++ {
-		left1, right2 := expandRange(s, i, i)
+		left1, right1 := expandRange(s, i, i)
 		left2, right2 := expandRange(s, i, i+1)
 
 		if right1-left1 > right-left {
