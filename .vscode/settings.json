@@ -1,4 +1,20 @@
 {
+    // Leetcode
+    "leetcode.filePath": {
+
+        "default": {
+            // relative folder path
+            "folder": "",
+            // file name
+            "filename": "${tag}/${id}.${kebab-case-name}.${ext}"
+        }
+    },
+    "leetcode.endpoint": "leetcode-cn",
+    "leetcode.workspaceFolder": "/home/xingzheng/leetcode",
+    "leetcode.defaultLanguage": "golang",
+    "leetcode.hint.configWebviewMarkdown": false,
+    "leetcode.showCommentDescription": true,
+    
     "go.goroot": "/usr/local/go",
     "go.gopath": "/home/xingzheng/go",
     "go.autocompleteUnimportedPackages": true,
