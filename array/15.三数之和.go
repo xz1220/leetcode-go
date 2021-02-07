@@ -109,7 +109,6 @@ func threeSum(nums []int) [][]int {
 //     sort.Ints(nums)
 //     n:=len(nums)
 //     result:=make([][]int,0)
-
 //     for first:=0; first <= n-1; first++ {
 //         // 第一个数也不能重复
 //         if first>0 && nums[first] == nums[first-1] {
