@@ -123,7 +123,6 @@ func threeSum(nums []int) [][]int {
 //             for second< third-1 && nums[third] + nums[second] > sum {
 //                 third--
 //             }
-
 //             if nums[third]+ nums[second] == sum {
 //                 result = append(result,[]int{nums[first],nums[second],nums[third]})
 //             }
