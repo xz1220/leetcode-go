@@ -89,5 +89,51 @@ func threeSum(nums []int) [][]int {
     }
     return ans
 }
+
+// func threeSum(nums []int) [][]int {
+//     // algorithm:
+//     // sort the nums
+//     // init the result
+//     // for first = 0,..., n-1 then
+//     //      third = n-1
+//     //      sum = -nums[first]
+//     //      for second = first + 1; second< third ; second ++ then
+//     //          if nums[second] == nums[second+1] then
+//     //              continue
+//     //           for ; nums[third] + nums[second]  > sum ; third -- ;
+//     //           if nums[third] + nums[second] == sum then
+//     //              result.appen([first,second,third])
+//     // return result
+//     //      
+    
+//     sort.Ints(nums)
+//     n:=len(nums)
+//     result:=make([][]int,0)
+
+//     for first:=0; first <= n-1; first++ {
+//         // 第一个数也不能重复
+//         if first>0 && nums[first] == nums[first-1] {
+//             continue
+//         }
+//         third := n-1
+//         sum := -1*nums[first]
+//         for second:= first+1 ; second < third ; second++ {
+//             if second> first+1 && nums[second] == nums[second-1] {
+//                 continue
+//             }
+
+//             for second< third-1 && nums[third] + nums[second] > sum {
+//                 third--
+//             }
+
+//             if nums[third]+ nums[second] == sum {
+//                 result = append(result,[]int{nums[first],nums[second],nums[third]})
+//             }
+//         }
+//     }
+
+//     return result
+    
+// }
 // @lc code=end
 
