@@ -39,30 +39,47 @@
 // [-4, -1. 10, 20，100]
 // @lc code=start
 func threeSumClosest(nums []int, target int) int {
-	n := len(nums)
-	sort.Ints(nums)
+	// 算法：从第十五题更改过来，找到绝对值由小变大的那个位置
+	// 最小值只可能出现在这些点之中
+
+	// 排序并定义一些变量
+	var n int = len(nums)
 	var distance int = 1<<63 - 1
 	var result int
+	var temp int = distance
+	var nextTemp int = distance
+	var isPositive1 bool
+	var isPositive2 bool
+	var abs = func(num int) (int, bool) {
+		if num < 0 {
+			return -num, false
+		}
+		return num, true
+	}
 
+	sort.Ints(nums)
+
+	// 第一重循环
 	for first := 0; first < n; first++ {
+		// 排除相同的数
 		if first > 0 && nums[first] == nums[first-1] {
 			continue
 		}
 
-		for second := first + 1; second < n; second++ {
-
-			third := n - 1
+		third := n - 1
+		// 双指针，第一个
+		for second := first + 1; second < third; second++ {
 
 			if second > first+1 && nums[second] == nums[second-1] {
 				continue
 			}
 
-			temp := 1<<63 - 1
-			nextTemp := 1<<63 - 1
+			// distanceTemp := 1<<63 - 1
 			for second < third {
-				temp = abs(nums[second] + nums[third] + nums[first] - target)
-				nextTemp = abs(nums[second] + nums[third-1] + nums[first] - target)
-				if temp < nextTemp {
+				temp, isPositive1 = abs(nums[second] + nums[third] + nums[first] - target)
+				// distanceTemp = temp
+				nextTemp, isPositive2 = abs(nums[second] + nums[third-1] + nums[first] - target)
+				if temp < nextTemp || (temp == nextTemp && isPositive1 != isPositive2) {
 					break
 				}
 				third--
@@ -72,21 +89,16 @@ func threeSumClosest(nums []int, target int) int {
 				distance = temp
 				if second == third {
 					result = nums[second] + nums[third+1] + nums[first]
+					// fmt.Println("restlt:",result)
 				} else {
 					result = nums[second] + nums[third] + nums[first]
+					// fmt.Println("restlt:",result)
 				}
 			}
 		}
 	}
 
 	return result
-}
-
-func abs(num int) int {
-	if num < 0 {
-		return -num
-	}
-	return num
 }
 
 // @lc code=end
