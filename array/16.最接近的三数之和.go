@@ -39,25 +39,27 @@
 // [-4, -1. 10, 20，100]
 // @lc code=start
 func threeSumClosest(nums []int, target int) int {
-	// 算法：从第十五题更改过来，找到绝对值由小变大的那个位置
-	// 最小值只可能出现在这些点之中
+	// 算法：从第十五题更改过来
+	// 要寻找三数之后最接近这个点的数，即找出相减后绝对值最小的点
+	// 1. 数组任意三数之和大于或者小于 target ， 找到最接近的即可
+	// 2. 任意三数之和有的大于有的小于，双指针法逼近
 
 	// 排序并定义一些变量
 	var n int = len(nums)
 	var distance int = 1<<63 - 1
-	var result int
-	var temp int = distance
-	var nextTemp int = distance
-	var isPositive1 bool
-	var isPositive2 bool
-	var abs = func(num int) (int, bool) {
+	var result int                        //
+	var temp int = distance               // 查找绝对值变化的点，第二重循环
+	var nextTemp int = distance           //
+	var isPositive1 bool                  // 判断是否为正数
+	var isPositive2 bool                  //
+	var abs = func(num int) (int, bool) { // 返回绝对值和是否为正数
 		if num < 0 {
 			return -num, false
 		}
 		return num, true
 	}
 
-	sort.Ints(nums)
+	sort.Ints(nums) // 排序
 
 	// 第一重循环
 	for first := 0; first < n; first++ {
@@ -66,18 +68,19 @@ func threeSumClosest(nums []int, target int) int {
 			continue
 		}
 
+		// 双指针法
 		third := n - 1
-		// 双指针，第一个
 		for second := first + 1; second < third; second++ {
-
+			// 排除相同的数
 			if second > first+1 && nums[second] == nums[second-1] {
 				continue
 			}
 
-			// distanceTemp := 1<<63 - 1
+			// 寻找距离突变的点：
+			// 1. 无突变的点，不发生break
+			// 2. 有绝对值突变的点，break
 			for second < third {
 				temp, isPositive1 = abs(nums[second] + nums[third] + nums[first] - target)
-				// distanceTemp = temp
 				nextTemp, isPositive2 = abs(nums[second] + nums[third-1] + nums[first] - target)
 				if temp < nextTemp || (temp == nextTemp && isPositive1 != isPositive2) {
 					break
@@ -85,14 +88,13 @@ func threeSumClosest(nums []int, target int) int {
 				third--
 			}
 
+			// 判断是否需要更新
 			if temp < distance {
 				distance = temp
 				if second == third {
 					result = nums[second] + nums[third+1] + nums[first]
-					// fmt.Println("restlt:",result)
 				} else {
 					result = nums[second] + nums[third] + nums[first]
-					// fmt.Println("restlt:",result)
 				}
 			}
 		}
