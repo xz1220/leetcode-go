@@ -36,10 +36,57 @@
  *
  *
  */
-
+// [-4, -1. 10, 20，100]
 // @lc code=start
 func threeSumClosest(nums []int, target int) int {
+	n := len(nums)
+	sort.Ints(nums)
+	var distance int = 1<<63 - 1
+	var result int
 
+	for first := 0; first < n; first++ {
+		if first > 0 && nums[first] == nums[first-1] {
+			continue
+		}
+
+		for second := first + 1; second < n; second++ {
+
+			third := n - 1
+
+			if second > first+1 && nums[second] == nums[second-1] {
+				continue
+			}
+
+			temp := 1<<63 - 1
+			nextTemp := 1<<63 - 1
+			for second < third {
+				temp = abs(nums[second] + nums[third] + nums[first] - target)
+				nextTemp = abs(nums[second] + nums[third-1] + nums[first] - target)
+				if temp < nextTemp {
+					break
+				}
+				third--
+			}
+
+			if temp < distance {
+				distance = temp
+				if second == third {
+					result = nums[second] + nums[third+1] + nums[first]
+				} else {
+					result = nums[second] + nums[third] + nums[first]
+				}
+			}
+		}
+	}
+
+	return result
+}
+
+func abs(num int) int {
+	if num < 0 {
+		return -num
+	}
+	return num
 }
 
 // @lc code=end
