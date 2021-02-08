@@ -73,13 +73,12 @@
  */
 
 // @lc code=start
-func removeDuplicates(nums []int) int {
-	// 双指针 快慢指针
+func removeElement(nums []int, val int) int {
 	var i, j int
 	var n int = len(nums)
 
 	for i < n && j < n {
-		if j > 0 && nums[j] == nums[j-1] {
+		if nums[j] == val {
 			j++
 			continue
 		}

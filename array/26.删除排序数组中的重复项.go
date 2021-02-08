@@ -60,7 +60,19 @@
 
 // @lc code=start
 func removeDuplicates(nums []int) int {
+	var i, j int
+	var n int = len(nums)
 
+	for i < n && j < n {
+		if j > 0 && nums[j] == nums[j-1] {
+			j++
+			continue
+		}
+		nums[i] = nums[j]
+		i++
+		j++
+	}
+	return i
 }
 
 // @lc code=end
