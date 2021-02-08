@@ -36,7 +36,48 @@
 
 // @lc code=start
 func fourSum(nums []int, target int) [][]int {
+	// 算法：
+	// 计算数组长度，排序数组
+	// 外双重循环，并保证不选用一样的数字
+	// 内双重循环使用双指针法
 
+	sort.Ints(nums)
+	var n int = len(nums)
+	ans := make([][]int, 0)
+
+	for first := 0; first < n; first++ {
+		if first > 0 && nums[first] == nums[first-1] {
+			continue
+		}
+		for second := first + 1; second < n; second++ {
+			if second > first+1 && nums[second] == nums[second-1] {
+				continue
+			}
+
+			fourth := n - 1
+			sum := target - nums[first] - nums[second]
+			for third := second + 1; third < n; third++ {
+				if third > second+1 && nums[third] == nums[third-1] {
+					continue
+				}
+
+				for third < fourth && nums[third]+nums[fourth] > sum {
+					fourth--
+				}
+
+				if third == fourth {
+					continue
+				}
+
+				if nums[third]+nums[fourth] == sum {
+					ans = append(ans, []int{nums[first], nums[second], nums[third], nums[fourth]})
+				}
+			}
+
+		}
+	}
+
+	return ans
 }
 
 // @lc code=end
