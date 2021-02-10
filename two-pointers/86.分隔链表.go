@@ -53,8 +53,45 @@
  *     Next *ListNode
  * }
  */
-func partition(head *ListNode, x int) *ListNode {
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+ func partition(head *ListNode, x int) *ListNode {
+	// 算法：
+	// 定义快慢指针：lowPoint highPoint 指向哑节点
+	// 如果下一个节点的值小于x，两者都指向下一个节点
+	// 如果下一个节点的值大于或等于x，highPoint 指向下一个节点，直到下一个节点小于x
+	// 指针交换，并都向下一个节点移动 
 
+	dump := &ListNode{x-1,head}
+	lowPoint := dump
+	for lowPoint.Next!= nil && lowPoint.Next.Val < x {
+		lowPoint = lowPoint.Next
+	}
+	highPoint := lowPoint
+
+	for highPoint.Next != nil {
+		for highPoint.Next!=nil && highPoint.Next.Val >= x {
+			highPoint = highPoint.Next
+		}
+
+		if highPoint.Next == nil {
+			continue
+		}
+		temp := highPoint.Next
+		highPoint.Next = temp.Next
+		temp.Next = lowPoint.Next
+		lowPoint.Next = temp
+
+		lowPoint = lowPoint.Next
+	   //  highPoint = highPoint.Next
+	}
+
+	return dump.Next
 }
 // @lc code=end
 
