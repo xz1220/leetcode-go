@@ -71,7 +71,47 @@
 
 // @lc code=start
 func removeDuplicates(nums []int) int {
+    var i,j int
+    var count int =0
 
+    for j < len(nums) {
+  
+        if j == 0 {
+            nums[i] = nums[j]
+            i++
+            j++
+            count++
+            continue
+        }
+        if j >0 && count< 2 && nums[j] == nums[j-1] {
+            nums[i] = nums[j]
+            i++
+            j++
+            count++
+            continue
+        }
+
+        if count <2 && nums[j] != nums[j-1] {
+            nums[i] = nums[j]
+            i++
+            j++
+            count = 1
+            continue
+        }
+        if count >=2 && nums[j] == nums[j-1] {
+            j++
+            count++
+            continue
+        }
+        if count >=2 && nums[j] != nums[j-1] {
+            nums[i] = nums[j]
+            i++
+            j++
+            count = 1
+            continue
+        }
+    }
+    return i
 }
 // @lc code=end
 
