@@ -48,7 +48,48 @@
 
 // @lc code=start
 func trap(height []int) int {
+    // 算法：双指针法
+    // 维护两个指针，left_max right_max
+    // 记录两者之间的最小值 minimize
+    // 当左指针小于等于右指针时 移动左指针
+    // 当左指针大于右指针时 移动右指针
+    // 每移动一个位置 记录差值并累加
 
+    n:= len(height)
+    if n== 0 || n == 1 {
+        return 0
+    }
+    left_max, right_max := height[0], height[n-1]
+    minimize := 0
+    result := 0
+
+    for i,j := 0, n-1 ; i != j ; {
+        if left_max> right_max {
+            minimize = right_max
+        }else {
+            minimize = left_max
+        }
+
+        if height[i] <= height[j] {
+            i++
+            if height[i] > left_max {
+                left_max = height[i]
+            }
+            if height[i] < minimize {
+                result += (minimize - height[i])
+            }
+        }else {
+            j--
+            if height[j] > right_max {
+                right_max = height[j]
+            }
+            if height[j] < minimize {
+                result += (minimize - height[j])
+            }
+        }
+    }
+
+    return result
 }
 // @lc code=end
 
