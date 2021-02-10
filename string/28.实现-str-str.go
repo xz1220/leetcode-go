@@ -44,6 +44,7 @@ func strStr(haystack string, needle string) int {
     l1 := len(haystack)
     l2 := len(needle)
 
+	// l
     if l2 == 0 {
         return 0
     }
