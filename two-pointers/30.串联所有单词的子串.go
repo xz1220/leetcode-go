@@ -42,7 +42,14 @@
 
 // @lc code=start
 func findSubstring(s string, words []string) []int {
-
+	// 算法： 双指针法
+	// 首先根据words初始化一个hash表，
+	// 循环遍历起点，按照单个word的长度：
+	//     初始化一个计数器和一个计数Hash表
+	//     循环从起点逐个读取单词
+	//     判断在words 的hash 表中有无对应的单词; 若有
+	//
+	//
 }
 // @lc code=end
 
