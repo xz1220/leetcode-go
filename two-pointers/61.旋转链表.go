@@ -44,8 +44,32 @@
  *     Next *ListNode
  * }
  */
-func rotateRight(head *ListNode, k int) *ListNode {
+ func rotateRight(head *ListNode, k int) *ListNode {
+    // 解法1:  快慢指针
+    // 解法2： 首尾相连
 
+    var temp *ListNode
+    var length int
+    if head == nil {
+        return nil
+    }
+
+    if k == 0 {
+        return head
+    }
+
+    for temp = head ; temp.Next != nil ; temp, length = temp.Next, length +1 { }
+    temp.Next = head
+    length += 1 
+
+    step := length - k%length
+    for index :=0 ; index < step - 1 ; index ++ {
+        head = head.Next
+    }
+    
+    temp = head.Next
+    head.Next = nil
+    return temp
 }
 // @lc code=end
 
