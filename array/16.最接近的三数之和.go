@@ -1,5 +1,5 @@
 /*
- * @lc app=leetcode.cn id=16 lang=golang
+* @lc app=leetcode.cn id=16 lang=golang
  *
  * [16] 最接近的三数之和
  *
@@ -35,7 +35,7 @@
  * -10^4 <= target <= 10^4
  *
  *
- */
+*/
 // [-4, -1. 10, 20，100]
 // @lc code=start
 func threeSumClosest(nums []int, target int) int {
