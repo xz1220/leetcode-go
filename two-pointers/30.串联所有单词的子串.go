@@ -46,10 +46,63 @@ func findSubstring(s string, words []string) []int {
 	// 首先根据words初始化一个hash表，
 	// 循环遍历起点，按照单个word的长度：
 	//     初始化一个计数器和一个计数Hash表
-	//     循环从起点逐个读取单词
-	//     判断在words 的hash 表中有无对应的单词; 若有
-	//
-	//
+	//     定义双执政l、r，l为起点，r来读取单词，循环从起点逐个读取单词，
+	//     判断在words 的hash 表中有无对应的单词; 若有：
+	//          如果计数hash表中的单词总数已经超过words的hash表
+    //          循环移动l直到满足 计数单词总数小于words中的Hash表，更新计数器和计数Hash表的值
+	//          对应计数器和hash表+1
+    //     若无：
+    //          循环移动l到当前r
+    //          l移动到下一个单词处
+    //     如果 当前的计数器的大小等于words单词的长度：
+    //          在结果中加入l
+    // 返回结果
+    // 边界条件：1. words为空，返回空 2. words 单词总长度大于s的长度，返回空
+
+    sLen := len(s)
+    numsWords := len(words)
+    lenWord := len(words[0])
+    result := []int{}
+    wordsMap := make(map[string]int)
+    distance := (numsWords-1)*lenWord
+
+    if numsWords == 0 || numsWords*lenWord > sLen {
+        return []int{}
+    }
+
+    for _,word := range words {
+        wordsMap[word]++ 
+    }
+
+    for i := 0 ; i< lenWord ; i++ {
+        counterMap := make(map[string]int)
+
+        for l,r := i, i ; r<= sLen - lenWord ; r+=lenWord {
+            word := s[r:r+lenWord]
+            if num, find := wordsMap[word] ; find {
+                for counterMap[word] >= num {
+                    counterMap[s[l:l+lenWord]]--
+                    l+=lenWord
+                }
+
+                counterMap[word]++
+            }else {
+                for l<r {
+                    counterMap[s[l:l+lenWord]]--
+                    l+=lenWord
+                }
+                l+=lenWord
+            }
+
+            if (r - l) == distance {
+                result = append(result, l)
+            }
+        }
+    }
+    
+    return result
+
 }
+
 // @lc code=end
 
