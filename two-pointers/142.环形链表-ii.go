@@ -78,8 +78,31 @@
  *     Next *ListNode
  * }
  */
-func detectCycle(head *ListNode) *ListNode {
-    
+ func detectCycle(head *ListNode) *ListNode {
+    if head == nil || head.Next == nil {
+        return nil
+    }
+
+    fast, slow := head.Next.Next, head.Next
+    for fast!=nil {
+        if fast.Next == nil || fast.Next.Next == nil {
+            return nil
+        }
+
+        if fast == slow {
+            temp := head
+            for temp != slow {
+                temp = temp.Next
+                slow = slow.Next
+            }
+            return temp
+        }
+        
+        fast = fast.Next.Next
+        slow = slow.Next
+    }
+
+    return nil
 }
 // @lc code=end
 
