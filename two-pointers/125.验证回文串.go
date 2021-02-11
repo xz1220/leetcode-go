@@ -33,7 +33,23 @@
 
 // @lc code=start
 func isPalindrome(s string) bool {
+    for i,j := 0, len(s)-1 ; i<= j ; i, j = i+1, j-1{
+        for i<len(s) && !isChar(s[i]) {
+            i++
+        } 
+        for j>= 0 && !isChar(s[j]) {
+            j--
+        }
+        if i<=j && strings.ToLower(string(s[i])) !=strings.ToLower(string(s[j])) {
+            return false
+        }
+    }
+    return true
 
+}
+
+func isChar(char byte) bool {
+    return char >= 'A' && char <= 'Z' || char >= 'a' && char <= 'z' || char >= '0' && char <= '9'
 }
 // @lc code=end
 
