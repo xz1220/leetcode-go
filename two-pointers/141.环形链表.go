@@ -76,8 +76,26 @@
  *     Next *ListNode
  * }
  */
-func hasCycle(head *ListNode) bool {
-    
+ func hasCycle(head *ListNode) bool {
+    if head == nil || head.Next == nil || head.Next.Next == nil {
+        return false
+    }
+
+    fast, slow := head.Next.Next, head.Next
+    for {
+        if fast.Next == nil || fast.Next.Next == nil {
+            return false
+        }
+
+        if fast == slow {
+            return true
+        }
+        
+        fast = fast.Next.Next
+        slow = slow.Next
+    }
+
+    return false
 }
 // @lc code=end
 
