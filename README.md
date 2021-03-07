@@ -86,7 +86,8 @@ func Traversal(root *TreeNode) {
 
 </details>
 
-**中序遍历**
+<details>
+<summary><strong>中序遍历</strong></summary>
 
 中序遍历非常类似于谦虚遍历，只是变换一下进行操作的位置
 
@@ -132,9 +133,10 @@ func Traversal(root *TreeNode){
 }
 ```
 
+</details>
 
-
-**后序遍历**
+<details>
+<summary><strong>后序遍历</strong></summary>
 
 后续遍历的非递归版本因为需要保证在访问左孩子和右孩子之后才访问当前节点，流程控制上稍微麻烦一点，大致有三种实现方式：
 
@@ -232,7 +234,10 @@ func Traversal(root *TreeNode){
 
 至此，我们就展示了后续遍历的三种实现思路，可以根据自己的喜好来进行选择。
 
-**层次遍历**
+</details>
+
+<details>
+<summary><strong>层次遍历</strong></summary>
 
 层次遍历的代码比較简单。仅仅须要一个队列就可以。先在队列中增加根结点。之后对于随意一个结点来说。在其出队列的时候，訪问之。同一时候假设左孩子和右孩子有不为空的。入队列。代码例如以下：
 
@@ -259,6 +264,10 @@ func Traversal(root *TreeNode){
 
 }
 ```
+
+<details>
+
+
 
 **Morris遍历算法**
 
