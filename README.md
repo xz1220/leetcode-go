@@ -265,11 +265,10 @@ func Traversal(root *TreeNode){
 }
 ```
 
+</details>
+
 <details>
-
-
-
-**Morris遍历算法**
+<summary><strong>Morris遍历算法</strong></summary>
 
 先直接给出JAVA实现
 
@@ -332,9 +331,5 @@ public class MorrisTraval {
   - 对于右子树，我们可以将其看为一个完整的树，root指向9，那么重复上述过程，我们可以得到7到9的数列
   - 同理，对于10来说，也看做是一个单节点的树，输出10
 
-
-
-
-
-
+</details>
 
