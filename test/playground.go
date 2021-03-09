@@ -88,3 +88,58 @@ func afterOrderV1(root *TreeNode) {
 		}
 	}
 }
+
+// 
+func PostorderTraversalV2(root *TreeNode) {
+	if root == nil {
+		return
+	}
+
+	var current *TreeNode
+	var preNode *TreeNode
+	stack := make([]*TreeNode, 0)
+	stack = append(stack, root)
+	
+	for len(stack) != nil {
+		current = stack[len(stack) -1]
+		if (current.Left == nil && current.Right == nil) || (preNode != nil && (preNode == current.Left || preNode == current.Right )) {
+			// do something to currentNode
+			stack = stack[:len(stack) -1]
+			preNode = current
+		}else {
+			// 因为是后序遍历，所以要注意顺序 先入栈右孩子 再入栈左孩子
+			if current.Right != nil {
+				stack = append(stack, current.Right)
+			}
+
+			if current.Left != nil {
+				stack = append(stack, current.Left)
+			}
+
+		}
+	}
+}
+
+// 修改前序遍历
+func PostorderTraversalV3(root *TreeNode) {
+
+	stack := make([]*TreeNode, 0)
+	list := make([]*TreeNode, 0)
+
+	for root!= nil || len(stack) != 0 {
+		if root!=nil {
+			stack = append(stack, root)
+			list = append(stack, root)
+			root = root.Right
+		}else {
+			temp := stack[len(stack) -1]
+			stack = stack[:len(stack) -1]
+			root = temp.Left
+		}
+	}
+
+	for i:= len(list) -1 ; i >= 0 ; i -- {
+		// do something to list[i]
+	}
+
+}

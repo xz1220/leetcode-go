@@ -182,55 +182,62 @@ func PostorderTraversalV1(root *TreeNode) {
 2. 第二种思路： 要保证根结点在左孩子和右孩子被访问之后才能被访问，因此对于任一结点P。先将其入栈。假设P不存在左孩子和右孩子。则能够直接访问它；或者P存在左孩子或者右孩子。可是其左孩子和右孩子都已被访问过了。则相同能够直接访问该结点。若非上述两种情况。则将P的右孩子和左孩子依次入栈。这样就保证了每次取栈顶元素的时候，左孩子在右孩子前面被访问。左孩子和右孩子都在根结点前面被访问。
 
 ```go
-func Traversal(root *TreeNode){
-    stack:=make([]*TreeNode,0)
- 	var cur *TreeNode
-    var pre *TreeNode
-    stack = append(stack,root)
-    for len(stack)!=0{
-        cur = stack[len(stack)-1]
-        if (cur.Left == nil && cur.Right == nil) || (pre!=nil && (pre == cur.Left || pre == cur.Right)){
-            // Do something
-            stack = stack[:len(stcak)-1]
-            pre = cur
-        }else{
-            if cur.Right!=nil{
-                stack = append(stack,cur.Right)
-            }
-            if cur.Left!=nil{
-                stack = append(stack, cur.Left)
-            }
-        }
-    }
+func PostorderTraversalV2(root *TreeNode) {
+	if root == nil {
+		return
+	}
+
+	var current *TreeNode
+	var preNode *TreeNode
+	stack := make([]*TreeNode, 0)
+	stack = append(stack, root)
+	
+	for len(stack) != nil {
+		current = stack[len(stack) -1]
+		if (current.Left == nil && current.Right == nil) || (preNode != nil && (preNode == current.Left || preNode == current.Right )) {
+			// do something to currentNode
+			stack = stack[:len(stack) -1]
+			preNode = current
+		}else {
+			// 因为是后序遍历，所以要注意顺序 先入栈右孩子 再入栈左孩子
+			if current.Right != nil {
+				stack = append(stack, current.Right)
+			}
+
+			if current.Left != nil {
+				stack = append(stack, current.Left)
+			}
+
+		}
+	}
 }
 ```
 
 3. 第三种思路： 前序遍历的非递归版本，访问顺序依次是根节点->左子树->右子树，如果将压栈顺序改动一下，可以很容易得到根节点->右子树->左子树，观察这个顺序和后序遍历左子树->右子树->根节点正好反序。
 
 ```go
-func Traversal(root *TreeNode){
-    if root == nil{
-        return
-    }
-    var temp *TreeNode = root
-    stack:=make([]*TreeNode,0)
-    list:=make([]*TreeNode,0)
-    
-    for len(stack)!=0 || temp!=nil{
-        if temp1=nil{
-            stack = append(stack,temp)
-            list = append(list,temp)
-            temp = temp.Right
-        }else{
-            node:=stack[len(stack)-1]
-            stack = stack[l:len(stack)-1]
-            temp = node.Left
-        }
-    }
-    
-    for i:=len(list)-1 ;i>=0;i--{
-        // Do something to list[i]  : 后序遍历
-    }
+// 修改前序遍历
+func PostorderTraversalV3(root *TreeNode) {
+
+	stack := make([]*TreeNode, 0)
+	list := make([]*TreeNode, 0)
+
+	for root!= nil || len(stack) != 0 {
+		if root!=nil {
+			stack = append(stack, root)
+			list = append(stack, root)
+			root = root.Right
+		}else {
+			temp := stack[len(stack) -1]
+			stack = stack[:len(stack) -1]
+			root = temp.Left
+		}
+	}
+
+	for i:= len(list) -1 ; i >= 0 ; i -- {
+		// do something to list[i]
+	}
+
 }
 ```
 
