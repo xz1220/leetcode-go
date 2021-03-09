@@ -143,7 +143,7 @@ func Traversal(root *TreeNode){
 1.  第一种思路：对于任一结点P，将其入栈，然后沿其左子树一直往下搜索。直到搜索到没有左孩子的结点，此时该结点出如今栈顶，可是此时不能将其出栈并访问，因为其右孩子还未被访问。所以接下来依照同样的规则对其右子树进行同样的处理，当访问完其右孩子时。该结点又出如今栈顶，此时能够将其出栈并访问。这样就保证了正确的访问顺序。能够看出，在这个过程中，每一个结点都两次出如今栈顶，仅仅有在第二次出如今栈顶时，才去访问它。因此须要多设置一个变量标识该结点是否是第一次出如今栈顶。
 
 ```go
-func afterOrderV1(root *TreeNode) {
+func PostorderTraversalV1(root *TreeNode) {
 	type StateTreeNode struct {
 		node *TreeNode
 		isFirst *TreeNode
