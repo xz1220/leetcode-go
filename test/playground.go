@@ -143,3 +143,27 @@ func PostorderTraversalV3(root *TreeNode) {
 	}
 
 }
+
+func LayerTraversal(root *TreeNode) {
+
+	if root == nil {
+		return 
+	}
+
+	queue := make([]*TreeNode, 0)
+	queue = append(queue, root)
+
+	for len(queue)!= 0 {
+		temp := queue[0]
+		queue := queue[1:]
+		// do something to temp
+
+		if temp.Left != nil {
+			queue = append(queue, temp.Left)
+		}
+
+		if temp.Right != nil {
+			queue = append(queue, temp.Right)
+		}
+	}
+}
