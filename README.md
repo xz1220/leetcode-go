@@ -143,37 +143,39 @@ func Traversal(root *TreeNode){
 1.  第一种思路：对于任一结点P，将其入栈，然后沿其左子树一直往下搜索。直到搜索到没有左孩子的结点，此时该结点出如今栈顶，可是此时不能将其出栈并访问，因为其右孩子还未被访问。所以接下来依照同样的规则对其右子树进行同样的处理，当访问完其右孩子时。该结点又出如今栈顶，此时能够将其出栈并访问。这样就保证了正确的访问顺序。能够看出，在这个过程中，每一个结点都两次出如今栈顶，仅仅有在第二次出如今栈顶时，才去访问它。因此须要多设置一个变量标识该结点是否是第一次出如今栈顶。
 
 ```go
-func Traversal(root *TreeNode){
-    type BTNode struct{
-        btnode *TreeNode
-        isFirst bool
-    }
-    
-    var temp *BTNode
-    var pre *TreeNode = root
-    stack:=make([]*BTNode,0)
- 
-    for pre!=nil || len(stack)!=0{
-        for pre!=nil{
-            btn:=make([]*BTNode,1)
-            btn.btnode = pre
-            btn.isFirst = true
-            stack = append(stack, btn)
-            pre = pre.Left
-        }
-        
+func afterOrderV1(root *TreeNode) {
+	type StateTreeNode struct {
+		node *TreeNode
+		isFirst *TreeNode
+	}
 
-        temp = stack[len(stack)-1]
-        stack = stack[:len(stack)-1]
-        if temp.isFirst {
-            temp.isFirst = false
-            stack = append(stack, temp)
-            p = temp.btnode.Right
-        }else{
-            // Do something  : 后序遍历
-            pre = nil
-        }
-    }
+	tempStateNode := &StateTreeNode{}
+	pre := root
+	StateTreeNodeStack := make([]*StateTreeNode, 0)
+	
+	for pre != nil || len(StateTreeNodeStack) != 0 {
+		if pre != nil {
+			// 第一次访问节点
+			StateTreeNodeStack = append(StateTreeNodeStack, &StateTreeNode{
+				node: pre,
+				isFirst: true
+			})
+			pre = pre.Left
+		}else {
+			// 出栈
+			tempStateNode = StateTreeNodeStack[len(StateTreeNodeStack) -1]
+			// 第一次出栈，第二次访问节点
+			if tempStateNode.isFirst {
+				tempStateNode.isFirst = false
+				pre = tempStateNode.node.Right
+			}else {
+				// Do something
+				StateTreeNodeStack = StateTreeNodeStack[:len(StateTreeNodeStack) -1]
+				pre = nil // 第三次访问节点，应该置为nil
+			}
+
+		}
+	}
 }
 ```
 
