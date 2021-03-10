@@ -137,7 +137,6 @@ func NonRecursiveRecoverTree(root *TreeNode)  {
 			stack = stack[:len(stack)-1]
 			
 			if pre!=nil && pre.Val>=root.Val{
-
                 y = root
                 if x == nil {
                     x = pre

@@ -103,58 +103,91 @@
 // }
 
 //在内存使用上没什么提升
-func isSymmetric(root *TreeNode) bool {
-	que:=make([]*TreeNode,0)
+// func isSymmetric(root *TreeNode) bool {
+// 	que:=make([]*TreeNode,0)
 	
-	//对根节点进行判断
-	if root!=nil {
-		que=append(que,root)
-	}
+// 	//对根节点进行判断
+// 	if root!=nil {
+// 		que=append(que,root)
+// 	}
 
-	//层次便利，对没一层都进行判断
-	for len(que)!=0{
-		tempQue:=make([]*TreeNode,0)
+// 	//层次便利，对没一层都进行判断
+// 	for len(que)!=0{
+// 		tempQue:=make([]*TreeNode,0)
 
-		for i:=0;i<len(que);i++{
+// 		for i:=0;i<len(que);i++{
 
-			if que[i].Left !=nil && que[len(que)-i-1].Right!=nil{
-				if que[i].Left.Val !=que[len(que)-i-1].Right.Val{
-					//fmt.Println("case 1")
-					return false
-				} 
-				tempQue=append(tempQue,que[i].Left)
-			}else if que[i].Left !=nil && que[len(que)-i-1].Right==nil{
-				//fmt.Println("case 2")
-				return false
-			}else if que[i].Left ==nil && que[len(que)-i-1].Right!=nil{
-				fmt.Println("case 3")
-				return false
-			}
+// 			if que[i].Left !=nil && que[len(que)-i-1].Right!=nil{
+// 				if que[i].Left.Val !=que[len(que)-i-1].Right.Val{
+// 					//fmt.Println("case 1")
+// 					return false
+// 				} 
+// 				tempQue=append(tempQue,que[i].Left)
+// 			}else if que[i].Left !=nil && que[len(que)-i-1].Right==nil{
+// 				//fmt.Println("case 2")
+// 				return false
+// 			}else if que[i].Left ==nil && que[len(que)-i-1].Right!=nil{
+// 				fmt.Println("case 3")
+// 				return false
+// 			}
 
 
 
-			if que[i].Right !=nil && que[len(que)-i-1].Left!=nil{
-				if que[i].Right.Val !=que[len(que)-i-1].Left.Val{
-					//fmt.Println("case 4")
-					return false
-				} 
-				tempQue=append(tempQue,que[i].Right)
-			}else if que[i].Right !=nil && que[len(que)-i-1].Left==nil{
-				//fmt.Println("case 5")
-				return false
-			}else if que[i].Right ==nil && que[len(que)-i-1].Left!=nil{
-				//fmt.Println("case 6")
-				return false
-			}
+// 			if que[i].Right !=nil && que[len(que)-i-1].Left!=nil{
+// 				if que[i].Right.Val !=que[len(que)-i-1].Left.Val{
+// 					//fmt.Println("case 4")
+// 					return false
+// 				} 
+// 				tempQue=append(tempQue,que[i].Right)
+// 			}else if que[i].Right !=nil && que[len(que)-i-1].Left==nil{
+// 				//fmt.Println("case 5")
+// 				return false
+// 			}else if que[i].Right ==nil && que[len(que)-i-1].Left!=nil{
+// 				//fmt.Println("case 6")
+// 				return false
+// 			}
+// 		}
+
+// 		que=tempQue
+// 		fmt.Println(len(que))
+		
+// 	}
+
+// 	return true
+
+// }
+
+// 标准答案
+func isSymmetric(root *TreeNode) bool {
+	u, v := root, root
+	que := make([]*TreeNode, 0)
+	que = append(que, u)
+    que = append(que, v)
+
+	for len(que)!= 0 {
+		u, v = que[0], que[1]
+		que = que[2:]
+
+		if u == nil && v == nil {
+			continue
 		}
 
-		que=tempQue
-		fmt.Println(len(que))
-		
+		if u == nil || v == nil {
+			return false
+		} 
+
+		if u.Val != v.Val {
+			return false
+		}
+
+        que = append(que, u.Left)
+        que = append(que, v.Right)
+
+        que = append(que, u.Right)
+        que = append(que, v.Left)
+
 	}
-
 	return true
-
 }
 
 // @lc code=end
