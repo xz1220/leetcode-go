@@ -69,23 +69,64 @@
  */
 
 // @lc code=start
-func maxSubArray(nums []int) int {
-    /* f(i) = max(f(i-1)+ nums[i], nums[i]) 
-     * f(i) 为以右端点为起始点的最大和连续子数组
-     *
-    */
-    var max int = nums[0]
-    for i:= 1; i < len(nums) ; i++ {
-        if nums[i-1] + nums[i] > nums[i] {
-            nums[i] += nums[i-1]
-        }
+// func maxSubArray(nums []int) int {
+//     /* f(i) = max(f(i-1)+ nums[i], nums[i]) 
+//      * f(i) 为以右端点为起始点的最大和连续子数组
+//      *
+//     */
+//     var max int = nums[0]
+//     for i:= 1; i < len(nums) ; i++ {
+//         if nums[i-1] + nums[i] > nums[i] {
+//             nums[i] += nums[i-1]
+//         }
 
-        if nums[i] > max {
-            max = nums[i]
-        }
+//         if nums[i] > max {
+//             max = nums[i]
+//         }
+//     }
+
+//     return max
+// }
+
+
+// 线段树搜索，分治算法
+type stateNums struct {
+    totalSum int    // 整个子数组的总和
+    leftSum int
+    rightSum int
+    maxSum int
+}
+
+func max(num1 , num2 int) int {
+    if num1 > num2 {
+        return num1
+    }
+    return num2
+}
+
+func putUp(left, right stateNums) stateNums {
+    totalSum := left.totalSum + right.totalSum
+    leftSum := max(left.leftSum, left.totalSum + right.leftSum)
+    rightSum := max(right.rightSum, left.rightSum + right.totalSum)
+    maxSum := max(max(left.maxSum, right.maxSum), left.rightSum + right.leftSum)
+    return stateNums{totalSum, leftSum, rightSum, maxSum}
+}
+
+func get(nums []int, left, right int) stateNums {
+    if left == right {
+        return stateNums{nums[left], nums[left], nums[left], nums[left]}
     }
 
-    return max
+    middleIndex := (left + right) >>1
+    leftSub := get(nums, left, middleIndex)
+    rightSub := get(nums, middleIndex+1, right)
+
+    return putUp(leftSub, rightSub)
+}
+
+
+func maxSubArray(nums []int) int {
+    return get(nums, 0, len(nums) -1).maxSum
 }
 // @lc code=end
 
