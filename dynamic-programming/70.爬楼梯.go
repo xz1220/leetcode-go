@@ -40,8 +40,21 @@
  */
 
 // @lc code=start
+// 斐波那契数列方法
 func climbStairs(n int) int {
+    // 我们发现：f(x) = f(x-1) + f(x-2)
+    if n == 0 || n ==1 {
+        return 1
+    }
 
+    var pre, current = 1, 1
+    for i:=2 ; i <= n ; i++ {
+        pre, current = current, pre + current
+    }
+
+    return current
 }
+
+
 // @lc code=end
 
