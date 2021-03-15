@@ -41,18 +41,54 @@
 
 // @lc code=start
 // 斐波那契数列方法
+// func climbStairs(n int) int {
+//     // 我们发现：f(x) = f(x-1) + f(x-2)
+//     if n == 0 || n ==1 {
+//         return 1
+//     }
+
+//     var pre, current = 1, 1
+//     for i:=2 ; i <= n ; i++ {
+//         pre, current = current, pre + current
+//     }
+
+//     return current
+// }
+
+// 特征方程法
+// func climbStairs(n int) int {
+//     sqrt5 := math.Sqrt(5)
+//     pow1 := math.Pow((1+sqrt5)/2, float64(n+1))
+//     pow2 := math.Pow((1-sqrt5)/2, float64(n+1))
+//     return int(math.Round((pow1 - pow2) / sqrt5))
+// }
+
+// 矩阵快速幂
+type matrix [2][2]int
+
+func mul(a, b matrix) (c matrix) {
+    for i := 0; i < 2; i++ {
+        for j := 0; j < 2; j++ {
+            c[i][j] = a[i][0]*b[0][j] + a[i][1]*b[1][j]
+        }
+    }
+    return c
+}
+
+func pow(a matrix, n int) matrix {
+    res := matrix{{1, 0}, {0, 1}}  // I
+    for ; n > 0; n >>= 1 {
+        if n&1 == 1 {
+            res = mul(res, a)
+        }
+        a = mul(a, a)
+    }
+    return res
+}
+
 func climbStairs(n int) int {
-    // 我们发现：f(x) = f(x-1) + f(x-2)
-    if n == 0 || n ==1 {
-        return 1
-    }
-
-    var pre, current = 1, 1
-    for i:=2 ; i <= n ; i++ {
-        pre, current = current, pre + current
-    }
-
-    return current
+    res := pow(matrix{{1, 1}, {1, 0}}, n)
+    return res[0][0]
 }
 
 
