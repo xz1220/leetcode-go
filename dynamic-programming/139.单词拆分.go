@@ -69,5 +69,37 @@ func wordBreak(s string, wordDict []string) bool {
     }
     return dp[n]
 }
+
+
+//***wrong answer***//
+func wordBreak(s string, wordDict []string) bool {
+    // 创建字典
+    dic := make(map[string]bool)
+    for index := range wordDict {
+        dic[wordDict[index]] = true
+    }
+
+    result := true
+    n := len(s)
+
+	// Test Case Failed: 
+	// "aaaaaaa"
+	// ["aaaa","aaa"]
+    for i:=0 ; i< n ; i++ {
+        temp := true
+        j := i
+        for ; j <n ; j++ {
+            if dic[s[i:j+1]] {
+                temp = true
+                break
+            }
+            temp = false
+        }
+        i = j
+        result = result && temp
+    }
+
+    return result
+}
 // @lc code=end
 
