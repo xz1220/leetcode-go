@@ -79,5 +79,39 @@
     }
     return current
 }
+
+func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
+    stack1, stack2 := make([]int, 0), make([]int, 0)
+    for l1 != nil {
+        stack1 = append(stack1, l1.Val)
+        l1 = l1.Next
+    }
+    for l2 != nil {
+        stack2 = append(stack2, l2.Val)
+        l2 = l2.Next
+    }
+
+    signed := 0
+    var current *ListNode = nil
+    for signed != 0 || len(stack1) != 0 || len(stack2) != 0 {
+        value1, value2 := 0, 0
+        if len(stack1) > 0 {
+            value1 = stack1[len(stack1) -1]
+            stack1 = stack1[:len(stack1) -1]
+        }
+
+        if len(stack2) > 0 {
+            value2 = stack2[len(stack2) -1]
+            stack2 = stack2[:len(stack2) -1]
+        }
+
+        sum := value1 + value2 + signed
+        tempNode := &ListNode{sum%10, current}
+        signed = (sum - sum % 10) /10
+        current = tempNode
+    }
+
+    return current
+}
 // @lc code=end
 
