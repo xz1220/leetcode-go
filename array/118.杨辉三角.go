@@ -48,7 +48,7 @@ func generate(numRows int) [][]int {
         for index:= 0 ; index < middle ; index ++ {
             temp[index] = cal(row -1, index)
         }
-        for index:= middle ; index < row ; index ++ {
+        for index:= middle ; index < row ; index ++ {   // 不通过这样会发生溢出
             if row % 2 == 1 {
                 temp[index] = temp[middle - (index - middle) -2]
             }else {
