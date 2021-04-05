@@ -82,5 +82,43 @@ func max(a, b int) int {
 	}
 	return b
 }
+
+// 2021/04/05更新
+func lengthOfLongestSubstring(s string) int {
+    n := len(s)
+    if n == 0 {
+        return 0
+    }else if n == 1{
+        return 1
+    }
+
+    dic := make(map[byte]bool)
+    i, j := 0, 0
+    max := 0
+    for j < n {
+        if exit, ok := dic[s[j]] ; !ok || !exit {
+            dic[s[j]] = true
+            j++
+        }else {
+            if j - i > max {
+                max = j - i
+            }
+            for i< j {
+                if s[i] != s[j] {
+                    dic[s[i]] = false
+                }else {
+                    i++
+                    break
+                }
+                i++
+            }
+            j++
+        }
+    }
+    if j - i > max {
+        max = j -i
+    }
+    return max
+}
 // @lc code=end
 
