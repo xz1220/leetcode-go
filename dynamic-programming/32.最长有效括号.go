@@ -57,41 +57,66 @@
 
 // @lc code=start
 func longestValidParentheses(s string) int {
-	// dp[i] =  dp[i-2] + 2      if s[i-1] == "(" && s[i] == ")"
-	//          dp[i-1] + 2 + dp[i - dp[i-1] -2]       if s[i-1] == s[i] == ")" && dp[i - dp[i-1] -1] == "("
-	
-		m := len(s)
-		if m<=1 {
-			return 0
-		}
-		dp := make([]int, m+1)
-		dp[0] = 0
-		maxLength := 0
-	
-		for i := 1 ; i <= m ; i ++ {
-			if s[i-1] == ')' {
-				if s[i-1] == '(' {
-					dp[i] = dp[i-2] + 2
-					// fmt.Println("i:", i, "  dp[i]:",dp[i])
-					maxLength = max(maxLength, dp[i])
-				}else {
-					if i - dp[i-1] -2>=0 && s[i - dp[i-1] -2] == '(' {
-						dp[i] = dp[i-1] + dp[i - dp[i-1] - 2] + 2
-						maxLength = max(maxLength, dp[i])
-						// fmt.Println("i:", i, "  dp[i]:",dp[i])
-					}
-				}
-			}
-		}
-	
-		return maxLength
-	}
-	
-	func max(num1, num2 int) int {
-		if num1 > num2 {
-			return num1
-		}
-		return num2
-	}
+    // dp[i] = 0    if s[i] == '('
+    //       = dp[i-2] +2   if s[i] == ")" && s[i-1] == '('
+    //       = dp[i-1] +2 +dp[i-dp[i-1]-2] if s[i] == ")" && s[i-1] == ")" && s[i - dp[i-1] - 1] == '('
+    //  (((()))))()())
+
+    length := len(s)
+    dp := make([]int, length +1)
+
+    max := 0
+    for i := 1; i <= length ; i++ {
+        if i > 1 && s[i-1] == ')' && s[i-2] == '(' {
+            dp[i] = dp[i-2] +2
+        }else if i - dp[i-1] - 2 >=0 && s[i -1] == ')' && s[i-2] == ')' && s[i - dp[i-1] - 2] == '(' {
+            dp[i] = dp[i-1] +2 + dp[i-dp[i-1] -2]
+        }
+        if dp[i] > max {
+            max = dp[i]
+        }
+    }
+
+    return max
+}
+
+
+func longestValidParentheses(s string) int {
+    l, r , max := 0, 0, 0
+
+    for i := range s {
+        if s[i] == '(' {
+            l ++
+        }else if s[i] == ')' {
+            r ++
+        }
+        if r == l {
+            if max < l {
+                max = l
+            }
+        }else if r > l {
+            l, r = 0, 0
+        }
+    }
+
+    l, r = 0, 0
+    for i := len(s) -1 ; i >= 0 ; i-- {
+                if s[i] == '(' {
+            l ++
+        }else if s[i] == ')' {
+            r ++
+        }
+        if r == l {
+            if max < l {
+                max = l
+            }
+        }else if r < l {
+            l, r = 0, 0
+        }
+    }
+    return max*2
+}
+
+
 // @lc code=end
 
