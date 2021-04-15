@@ -119,6 +119,55 @@ func (h *MinHeap) Pop() interface{} {
 	return x
 }
 
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+ func mergeKLists(lists []*ListNode) *ListNode {
+    if len(lists) == 0 {
+        return nil
+    }else if len(lists) == 1 {
+        return lists[0]
+    }else if len(lists) == 2 {
+        return merge(lists[0], lists[1])
+    }
+    
+    length := len(lists)
+    mergeList1 := mergeKLists(lists[:length/2])
+    mergeList2 := mergeKLists(lists[length/2:])
+    return merge(mergeList1, mergeList2)
+}
 
+func merge(list1, list2 *ListNode) *ListNode {
+    if list1 == nil {
+        return list2
+    }else if list2 == nil {
+        return list1
+    }
+
+    dummyNode := &ListNode{0, list1}
+    pre := dummyNode
+    node1, node2 := list1, list2
+    for node1 != nil && node2 != nil {
+        if node2.Val >= node1.Val {
+            node1 = node1.Next
+            pre = pre.Next
+        }else {
+            temp := node2
+            node2 = node2.Next
+            temp.Next = node1
+            pre.Next = temp
+            pre = pre.Next  //  插入之后，pre 后移
+        }
+    }
+
+    if node1 == nil {
+        pre.Next = node2
+    }
+    return dummyNode.Next
+}
 // @lc code=end
 
