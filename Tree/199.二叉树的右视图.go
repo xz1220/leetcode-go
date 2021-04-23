@@ -63,5 +63,28 @@ func rightSideView(root *TreeNode) []int {
 	return list
 
 }
+
+func rightSideView(root *TreeNode) []int {
+    ans := make([]int, 0)
+    que := make([]*TreeNode, 0)
+    if root != nil {
+        que = append(que, root)
+    }
+
+    for len(que) != 0 {
+        ans = append(ans, que[len(que) -1].Val)
+        temp := make([]*TreeNode, 0)
+        for i := range que {
+            if que[i].Left != nil {
+                temp = append(temp, que[i].Left)
+            }
+            if que[i].Right != nil {
+                temp = append(temp, que[i].Right)
+            }
+        }
+        que = temp
+    }
+    return ans
+}
 // @lc code=end
 
