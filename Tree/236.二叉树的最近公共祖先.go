@@ -77,5 +77,43 @@
 	}
 	return right
 }
+
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+ func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
+	var ans *TreeNode
+	var dfs func(*TreeNode) bool 
+	isFirst := true
+
+	dfs = func(node *TreeNode) bool {
+		if node == nil {
+			return false
+		}
+		
+		isFind := false
+		if node == p || node == q {
+			isFind = true
+		}
+		findInLeft := dfs(node.Left)
+		findInRight := dfs(node.Right)
+
+		if isFirst && ( (isFind && (findInLeft || findInRight)) || (findInLeft && findInRight) ) {
+			isFirst = false
+			ans = node
+		}
+
+		return isFind || findInLeft || findInRight
+	}
+
+	dfs(root)
+
+	return ans
+}
 // @lc code=end
 
