@@ -128,5 +128,24 @@ func get(nums []int, left, right int) stateNums {
 func maxSubArray(nums []int) int {
     return get(nums, 0, len(nums) -1).maxSum
 }
+
+func maxSubArray(nums []int) int {
+    ans := nums[0]
+    for i := range nums {
+        if i == 0 {
+            continue
+        }
+        nums[i] = max(nums[i], nums[i] + nums[i-1])
+        ans = max(nums[i], ans)
+    }
+    return ans
+}
+
+func max(num1, num2 int) int {
+    if num1 > num2 {
+        return num1
+    }
+    return num2
+}
 // @lc code=end
 
