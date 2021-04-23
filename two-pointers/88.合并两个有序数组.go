@@ -69,5 +69,28 @@ func merge(nums1 []int, m int, nums2 []int, n int)  {
     }
 
 }
+
+func merge(nums1 []int, m int, nums2 []int, n int)  {
+    p1, p2, pMax := m -1, n -1, len(nums1) -1
+    for p1 >=0 && p2 >=0 {
+        if nums1[p1] > nums2[p2] {
+            nums1[pMax] = nums1[p1]
+            p1 --
+            pMax --
+        }else {
+            nums1[pMax] = nums2[p2]
+            p2 --
+            pMax --
+        }
+    }
+
+    if p1 <= 0 {                            // < :---> [0] 0 [1] 1
+        for pMax >=0 && p2 >=0 {
+            nums1[pMax] = nums2[p2]
+            p2 --
+            pMax --
+        }
+    }
+}
 // @lc code=end
 
