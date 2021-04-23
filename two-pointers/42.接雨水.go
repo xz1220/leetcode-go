@@ -91,5 +91,32 @@ func trap(height []int) int {
 
     return result
 }
+
+func trap(height []int) int {
+    if len(height) <= 2 {
+        return 0
+    }
+    ans :=0
+    l, lbig, r, rbig := 0, height[0], len(height) -1, height[len(height) -1]
+
+    for l < r {
+        if lbig <= rbig {
+            l ++
+            if height[l] <= lbig {
+                ans += (lbig - height[l])
+            }else {
+                lbig = height[l]
+            }
+        }else {
+            r -- 
+            if height[r] <= rbig {
+                ans += (rbig - height[r])
+            }else {
+                rbig = height[r]
+            }
+        }
+    }
+    return ans
+}
 // @lc code=end
 
