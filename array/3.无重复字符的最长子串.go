@@ -120,5 +120,47 @@ func lengthOfLongestSubstring(s string) int {
     }
     return max
 }
+
+
+// 2021/7/29
+func lengthOfLongestSubstring(s string) int {
+    if len(s) <= 1 {
+        return len(s)
+    }
+
+    var ans int
+
+    dic := make(map[byte]bool, 0)
+    left, right := 0, 1
+    dic[s[0]] = true
+    
+    for right < len(s) {
+        if val, ok := dic[s[right]]; ok && val {
+            if right - left > ans {
+                ans = right - left
+            }
+
+            for left < right && s[left] != s[right] {
+                dic[s[left]] = false
+                left += 1
+            }
+
+            if s[left] == s[right] {
+                dic[s[left]] = false
+                left += 1
+            }
+        }
+
+        dic[s[right]] = true
+        right +=1
+    }
+
+    if right - left > ans {
+        ans = right - left
+    }
+
+    return ans
+}
+
 // @lc code=end
 
