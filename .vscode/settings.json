@@ -10,10 +10,11 @@
         }
     },
     "leetcode.endpoint": "leetcode-cn",
-    "leetcode.workspaceFolder": "/home/xingzheng/leetcode",
+    "leetcode.workspaceFolder": "/Users/bytedance/leetcode-go",
     "leetcode.defaultLanguage": "golang",
     "leetcode.hint.configWebviewMarkdown": false,
     "leetcode.showCommentDescription": true,
+    
     
     "go.goroot": "/usr/local/go",
     "go.gopath": "/home/xingzheng/go",
@@ -24,5 +25,6 @@
     "go.useCodeSnippetsOnFunctionSuggestWithoutType": true,
     "go.docsTool": "gogetdoc",
     "go.inferGopath": false,
-    "go.formatTool": "gofmt"
+    "go.formatTool": "gofmt",
+    "editor.codeActionsOnSave": null
 }
