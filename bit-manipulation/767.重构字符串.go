@@ -45,6 +45,61 @@
  */
 
 // @lc code=start
+
+func reorganizeString2(s string) string {
+	//
+	n := len(s)
+	if n <= 1 {
+		return s
+	}
+
+	maxBuket := 0
+	digitMap := [][]int{}
+	for i := 0; i < 26; i++ {
+		digitMap = append(digitMap, []int{0, 0})
+	}
+
+	for i := range s {
+		digitMap[s[i]-'a'][0] = int(s[i] - 'a')
+		digitMap[s[i]-'a'][1] += 1
+		if digitMap[s[i]-'a'][1] > maxBuket {
+			maxBuket = digitMap[s[i]-'a'][1]
+		}
+	}
+
+	if maxBuket > (n+1)/2 {
+		return ""
+	}
+
+	sort.Slice(digitMap, func(i, j int) bool {
+		return digitMap[i][1] >= digitMap[j][1]
+	})
+
+	//
+	index := 0
+	bukect := make([][]byte, maxBuket)
+	for i := 0; i < maxBuket; i++ {
+		bukect[i] = make([]byte, 0)
+	}
+
+	//
+	for i := range digitMap {
+		ch := byte(digitMap[i][0] + 'a')
+		for digitMap[i][1] > 0 {
+			bukect[index] = append(bukect[index], ch)
+			index = (index + 1) % maxBuket
+			digitMap[i][1]--
+		}
+	}
+
+	ans := ""
+	for i := range bukect {
+		ans += string(bukect[i])
+	}
+
+	return ans
+}
+
 func reorganizeString(s string) string {
 	//
 	n := len(s)
